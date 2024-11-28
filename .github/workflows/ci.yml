@@ -3,28 +3,34 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - main  # Asegúrate de usar la rama correcta
   pull_request:
     branches:
-      - main
+      - main  # Asegúrate de usar la rama correcta
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Usar una imagen de Ubuntu para la ejecución
 
     steps:
+      # Paso 1: Clonar el repositorio
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Paso 2: Configurar Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '18'  # Ajusta a la versión que estés utilizando
 
+      # Paso 3: Instalar las dependencias del proyecto
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
 
+      # Paso 4: Asegurarse de que los permisos sean correctos para Jest
+      - name: Set permissions for jest binary
+        run: chmod +x ./node_modules/.bin/jest
+
+      # Paso 5: Ejecutar las pruebas
       - name: Run tests
-        run: |
-          npm test
+        run: npx jest  # Ejecuta jest usando npx
